@@ -28,6 +28,14 @@
   justify-content: center;
 }
 
+.album-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  gap: 13px;
+}
+
 .album-container {
   margin: 0;
   display: flex;
