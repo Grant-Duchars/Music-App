@@ -118,7 +118,7 @@ fn album_list_row(
         <div class="album-list-row">
             {albums
                 .into_iter()
-                .zip((0 as isize..).into_iter())
+                .zip(0_isize..)
                 .map(|(a, i)| {
                     match a {
                         Some(album) => {
