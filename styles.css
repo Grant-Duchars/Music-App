@@ -1,11 +1,19 @@
+@font-face {
+  font-family: "PlusJakartaSans";
+  src: url("public/fonts/PlusJakartaSans-VariableFont_wght.ttf");
+}
+@font-face {
+  font-family: "PlusJakartaSans";
+  src: url("public/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf");
+  font-style: italic;
+}
+
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
+  font-family: "PlusJakartaSans", Inter, Avenir, Helvetica, Arial, sans-serif;
 
   color: #0f0f0f;
   background-color: #f6f6f6;
+  scrollbar-width: thin;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -14,21 +22,13 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.container {
+html,
+body {
   margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  padding: 0;
 }
 
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-.album-grid {
+.album-list-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
