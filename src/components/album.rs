@@ -23,14 +23,31 @@ fn skeleton_album() -> impl IntoView {
 }
 
 #[component]
-fn album(album: AlbumData) -> impl IntoView {
+fn album(
+    coords: RwSignal<(isize, isize)>,
+    self_coords: (isize, isize),
+    album: AlbumData,
+) -> impl IntoView {
     let AlbumData {
         cover,
         title,
         artist,
     } = album;
     view! {
-        <div class="album-container">
+        <div
+            class="album-container"
+            on:click=move |_| {
+                coords
+                    .update(|c| {
+                        if *c == self_coords {
+                            *c = (-1, -1);
+                        } else {
+                            *c = self_coords;
+                        }
+                    });
+            }
+        >
+
             <div class="album-cover-image">
                 <img src=cover/>
             </div>
@@ -76,13 +93,14 @@ pub fn album_list(
         }
         set_rows.set(rows);
     });
+    let coords = create_rw_signal((-1, -1));
     view! {
         <div style=("--album-width", format!("{}px", album_width.get()))>
             <For
                 each=move || rows.get().into_iter()
                 key=|id| (id.0, id.1.len())
-                children=move |(_, albums)| {
-                    view! { <AlbumListRow albums/> }
+                children=move |(row_num, albums)| {
+                    view! { <AlbumListRow coords row_num albums/> }
                 }
             />
 
@@ -91,20 +109,38 @@ pub fn album_list(
 }
 
 #[component]
-fn album_list_row(albums: Vec<Option<AlbumData>>) -> impl IntoView {
+fn album_list_row(
+    coords: RwSignal<(isize, isize)>,
+    row_num: usize,
+    albums: Vec<Option<AlbumData>>,
+) -> impl IntoView {
     view! {
         <div class="album-list-row">
             {albums
                 .into_iter()
-                .map(|a| {
+                .zip((0 as isize..).into_iter())
+                .map(|(a, i)| {
                     match a {
                         Some(album) => {
-                            view! { <Album album/> }
+                            let self_coords = (row_num as isize, i);
+                            view! { <Album coords self_coords album/> }
                         }
                         None => view! { <SkeletonAlbum/> },
                     }
                 })
                 .collect_view()}
+        </div>
+        <Show when=move || coords.with(|(x, _)| *x == row_num as isize) fallback=|| view! {}>
+            <AlbumSongList coords/>
+        </Show>
+    }
+}
+
+#[component]
+fn album_song_list(coords: RwSignal<(isize, isize)>) -> impl IntoView {
+    view! {
+        <div class="album-song-list">
+            <h1>"Coords: " {coords}</h1>
         </div>
     }
 }
