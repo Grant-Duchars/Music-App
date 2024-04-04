@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
       - uses: actions/cache@v3
         with:
           path: |
@@ -17,9 +20,6 @@ jobs:
           restore-keys: |
             debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
             debug-${{ runner.os }}-
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: [rustfmt, clippy]
       - name: Test
         run: cargo test
       - name: Fmt
