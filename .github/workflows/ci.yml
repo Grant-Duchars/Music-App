@@ -20,8 +20,12 @@ jobs:
           restore-keys: |
             debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
             debug-${{ runner.os }}-
-      - name: Test
-        run: cargo test
+      - name: Test Lib
+        run: cargo test -p music-app-lib
+      - name: Test Frontend
+        run: cargo test -p music-app-ui
+      - name: Test Backend
+        run: cargo test -p music-app-backend
       - name: Fmt
         run: cargo fmt --check
       - name: Clippy
