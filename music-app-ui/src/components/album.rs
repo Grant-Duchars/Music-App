@@ -1,5 +1,5 @@
-use crate::data::Album;
 use leptos::*;
+use music_app_lib::Album;
 
 #[component]
 pub fn album(
@@ -12,6 +12,7 @@ pub fn album(
         title,
         artist,
         songs: _,
+        runtime: _,
     } = album;
     view! {
         <div
