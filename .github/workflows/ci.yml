@@ -1,0 +1,28 @@
+name: Rust CI
+on: [push, pull_request]
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  CI:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ./target
+            ~/.cargo
+          key: debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
+            debug-${{ runner.os }}-
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: [rustfmt, clippy]
+      - name: Test
+        run: cargo test
+      - name: Fmt
+        run: cargo fmt --check
+      - name: Clippy
+        run: cargo clippy -- -D warnings
