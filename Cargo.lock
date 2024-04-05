@@ -2223,15 +2223,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "music-app-lib"
-version = "0.1.0"
-dependencies = [
- "rand 0.8.5",
- "regex",
-]
-
-[[package]]
-name = "music-app-ui"
+name = "music-app-frontend"
 version = "0.1.0"
 dependencies = [
  "js-sys",
@@ -2243,6 +2235,14 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+]
+
+[[package]]
+name = "music-app-lib"
+version = "0.1.0"
+dependencies = [
+ "rand 0.8.5",
+ "regex",
 ]
 
 [[package]]

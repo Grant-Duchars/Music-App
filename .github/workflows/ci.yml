@@ -4,28 +4,15 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   CI:
-    name: CI
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@master
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ./target
-            ~/.cargo
-          key: debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.lock') }}
-          restore-keys: |
-            debug-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-
-            debug-${{ runner.os }}-
-      - name: Test Lib
-        run: cargo test -p music-app-lib
-      - name: Test Frontend
-        run: cargo test -p music-app-ui
-      - name: Test Backend
-        run: cargo test -p music-app-backend
+      - uses: Swatinem/rust-cache@v2
+      - name: Test
+        run: cargo test
       - name: Fmt
         run: cargo fmt --check
       - name: Clippy

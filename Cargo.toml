@@ -1,11 +1,11 @@
 [workspace]
-members = ["music-app-ui","music-app-backend","music-app-lib"]
-authors = ["Grant Duchars"]
-version = "0.1.0"
-edition = "2021"
+members = ["music-app-frontend","music-app-backend","music-app-lib"]
 resolver = "2"
 
 [workspace.package]
 authors = ["Grant Duchars"]
 version = "0.1.0"
 edition = "2021"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }

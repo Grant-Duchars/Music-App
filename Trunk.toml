@@ -1,5 +1,5 @@
 [build]
-target = "./music-app-ui/index.html"
+target = "./music-app-frontend/index.html"
 
 [watch]
 ignore = ["./music-app-backend"]

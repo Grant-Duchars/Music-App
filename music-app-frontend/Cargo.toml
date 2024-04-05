@@ -1,5 +1,5 @@
 [package]
-name = "music-app-ui"
+name = "music-app-frontend"
 description = "Frontend UI for the Music App"
 authors.workspace = true
 version.workspace = true
@@ -12,6 +12,6 @@ wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
 web-sys = { version = "0.3", features = ["Window"] }
-serde = { version = "1", features = ["derive"] }
+serde.workspace = true
 serde-wasm-bindgen = "0.6"
 music-app-lib = { path = "../music-app-lib" }
