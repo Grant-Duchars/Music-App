@@ -1,14 +1,12 @@
 [package]
-name = "music-app"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+name = "music-app-backend"
+description = "Tauri Backend for Music App"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
 
 [lib]
-name = "music_app_lib"
+name = "music_app_backend_lib"
 crate-type = ["lib", "cdylib", "staticlib"]
 
 [build-dependencies]
@@ -17,7 +15,7 @@ tauri-build = { version = "2.0.0-beta", features = [] }
 [dependencies]
 tauri = { version = "2.0.0-beta", features = [] }
 tauri-plugin-shell = "2.0.0-beta"
-serde = { version = "1", features = ["derive"] }
+serde.workspace = true
 serde_json = "1"
 
 [features]

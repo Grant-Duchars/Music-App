@@ -41,11 +41,17 @@ impl Albums {
 impl Album {
     /// Creates an `Album`
     pub fn new<T: ToString>(cover: T, title: T, artist: T, songs: Rc<[Song]>) -> Self {
+        let runtime = Self::collect_runtime(&songs);
         Album {
             cover: cover.to_string(),
             title: title.to_string(),
             artist: artist.to_string(),
             songs,
+            runtime,
         }
+    }
+
+    fn collect_runtime(songs: &Rc<[Song]>) -> usize {
+        songs.iter().fold(0, |acc, s| acc + s.length)
     }
 }

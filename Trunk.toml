@@ -1,8 +1,8 @@
 [build]
-target = "./index.html"
+target = "./music-app-frontend/index.html"
 
 [watch]
-ignore = ["./src-tauri"]
+ignore = ["./music-app-backend"]
 
 [serve]
 address = "0.0.0.0"

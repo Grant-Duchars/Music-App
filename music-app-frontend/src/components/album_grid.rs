@@ -2,8 +2,8 @@ use super::{
     album::{Album, SkeletonAlbum},
     album_song_list::AlbumSongList,
 };
-use crate::data::{Album, Albums};
 use leptos::*;
+use music_app_lib::{Album, Albums};
 
 const ALBUM_GRID_GAP: usize = 13;
 
@@ -29,7 +29,7 @@ pub fn album_grid(
             .expect("albums should be initialized")
             .div_ceil(num_per_row.get())
     });
-    let (rows, set_rows) = create_signal(Vec::with_capacity(0));
+    let (rows, set_rows) = create_signal(Vec::default());
     create_render_effect(move |_| {
         with!(|num_per_row, num_rows| {
             let mut new_rows = Vec::with_capacity(*num_rows);

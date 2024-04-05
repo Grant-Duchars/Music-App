@@ -1,25 +1,22 @@
 name: Deploy github pages
-
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-
 permissions:
   contents: write # for committing to gh-pages branch
-
 jobs:
-  build-github-pages:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3 # repo checkout
+      - name: Checkout
+        uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1 # get rust toolchain for wasm
         with:
           profile: minimal
           toolchain: stable
           target: wasm32-unknown-unknown
           override: true
-      - name: Rust Cache # cache the rust build artifacts
+      - name: Rust Cache
         uses: Swatinem/rust-cache@v2
       - name: Download and install Trunk binary
         run: wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.19.1/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
@@ -28,5 +25,5 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist
+          folder: music-app-frontend/dist
           single-commit: true

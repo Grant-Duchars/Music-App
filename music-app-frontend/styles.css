@@ -10,6 +10,7 @@
 
 :root {
   font-family: "PlusJakartaSans", Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 550;
 
   color: #0f0f0f;
   background-color: #f6f6f6;
@@ -27,6 +28,8 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Album Grid Styling */
 
 .album-grid-row {
   display: flex;
@@ -71,4 +74,71 @@ body {
   left: 0;
   width: 100%;
   border-radius: inherit;
+}
+
+/* Album Song List Styling */
+
+.album-song-list {
+  margin: 13px;
+  border: #0f0f0f;
+  border-width: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.album-song-list > div {
+  width: 85%;
+}
+
+.album-song-list h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.album-song-list h2 {
+  font-size: 16px;
+  font-style: italic;
+  margin: 0;
+}
+
+.album-song-list h2.two {
+  font-style: normal;
+}
+
+.album-song-list-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr;
+  grid-template-rows: var(--asl-template);
+  grid-auto-columns: 1fr;
+  list-style-type: decimal-leading-zero;
+  list-style-position: inside;
+  margin: 0;
+  padding: 0;
+}
+
+.album-song-list-list > li::before {
+  white-space: pre;
+  content: "  ";
+}
+
+.album-song-list-row {
+  display: grid;
+  grid-template: min-content / auto auto;
+}
+
+.album-song-list-row-inline {
+  display: inline-grid;
+  width: inherit;
+  grid-template: min-content / auto auto;
+}
+
+.album-song-list-row > .one,
+.album-song-list-row-inline > .one {
+  justify-self: start;
+}
+
+.album-song-list-row > .two,
+.album-song-list-row-inline > .two {
+  justify-self: end;
 }

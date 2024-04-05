@@ -6,7 +6,7 @@
     "beforeDevCommand": "trunk serve",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "trunk build",
-    "frontendDist": "../dist"
+    "frontendDist": "../music-app-frontend/dist"
   },
   "app": {
     "withGlobalTauri": true,
