@@ -134,12 +134,18 @@ fn test_mock_albums() {
 /// # Examples
 /// ```
 /// use music_app_lib::calc_runtime;
-/// assert_eq!([0, 0, 1], calc_runtime(1));
-/// assert_eq!([0, 1, 1], calc_runtime(61));
-/// assert_eq!([1, 1, 1], calc_runtime(3_661));
-/// assert_eq!([0, 0, 59], calc_runtime(59));
-/// assert_eq!([0, 59, 59], calc_runtime(3_599));
-/// assert_eq!([999, 59, 59], calc_runtime(3_599_999));
+///
+/// assert_eq!([0, 0, 0, 0, 1], calc_runtime(1));
+/// assert_eq!([0, 0, 0, 1, 1], calc_runtime(61));
+/// assert_eq!([0, 0, 1, 1, 1], calc_runtime(3_661));
+/// assert_eq!([0, 1, 1, 1, 1], calc_runtime(90_061));
+/// assert_eq!([1, 1, 1, 1, 1], calc_runtime(694_861));
+///
+/// assert_eq!([0, 0, 0, 0, 59], calc_runtime(59));
+/// assert_eq!([0, 0, 0, 59, 59], calc_runtime(3_599));
+/// assert_eq!([0, 0, 23, 59, 59], calc_runtime(86_399));
+/// assert_eq!([0, 6, 23, 59, 59], calc_runtime(604_799));
+/// assert_eq!([999, 6, 23, 59, 59], calc_runtime(604_799_999));
 /// ```
 pub fn calc_runtime(num: usize) -> [usize; 5] {
     const WEEK: usize = 604800;
