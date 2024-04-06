@@ -40,13 +40,14 @@ impl Albums {
 
 impl Album {
     /// Creates an `Album`
-    pub fn new<T: ToString>(cover: T, title: T, artist: T, songs: Rc<[Song]>) -> Self {
+    pub fn new<T: ToString>(cover: T, title: T, artist: T, songs: Rc<[Song]>, genre: T) -> Self {
         let runtime = Self::collect_runtime(&songs);
         Album {
             cover: cover.to_string(),
             title: title.to_string(),
             artist: artist.to_string(),
             songs,
+            genre: genre.to_string(),
             runtime,
         }
     }

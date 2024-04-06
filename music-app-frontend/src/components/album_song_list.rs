@@ -27,12 +27,12 @@ pub fn album_song_list(
                         let album = selected.with(|s| Albums::get_album(s.unwrap()).unwrap());
                         view! {
                             <div class="album-song-list-row">
-                                <h1 class="one">{&album.title}</h1>
-                                <h2 class="two">{to_words(album.runtime)}</h2>
+                                <h1>{&album.title}</h1>
+                                <h2>{to_words(album.runtime)}</h2>
                             </div>
                             <div class="album-song-list-row">
-                                <h2 class="one">{&album.artist}</h2>
-                                <h2 class="two">"Soundtrack"</h2>
+                                <h2 style="font-style: italic;">{&album.artist}</h2>
+                                <h2>{&album.genre}</h2>
                             </div>
                             <SongList songs=&album.songs/>
                         }
@@ -54,14 +54,7 @@ fn song_list(songs: &'static Rc<[Song]>) -> impl IntoView {
             {songs
                 .iter()
                 .map(|s: &Song| {
-                    view! {
-                        <li>
-                            <div class="album-song-list-row-inline">
-                                <div class="one">{&s.title}</div>
-                                <div class="two">{to_digital(s.length)}</div>
-                            </div>
-                        </li>
-                    }
+                    view! { <li>{&s.title} <span>{to_digital(s.length)}</span></li> }
                 })
                 .collect_view()}
         </ol>

@@ -10,7 +10,10 @@
 
 :root {
   font-family: "PlusJakartaSans", Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+
+  --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
   color: #0f0f0f;
   background-color: #f6f6f6;
@@ -65,7 +68,7 @@ body {
   padding-top: 100%;
   position: relative;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: var(--box-shadow);
 }
 
 .album-cover-image > img {
@@ -80,14 +83,20 @@ body {
 
 .album-song-list {
   margin: 13px;
-  border: #0f0f0f;
-  border-width: 5px;
+  margin-left: 0%;
+  margin-right: 0%;
   display: flex;
   justify-content: center;
 }
 
 .album-song-list > div {
-  width: 85%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  width: 100%;
+  padding: 2%;
+  padding-left: 4%;
+  padding-right: 4%;
+  box-shadow: var(--box-shadow);
 }
 
 .album-song-list h1 {
@@ -97,24 +106,33 @@ body {
 
 .album-song-list h2 {
   font-size: 16px;
-  font-style: italic;
   margin: 0;
 }
 
-.album-song-list h2.two {
-  font-style: normal;
+.album-song-list-row {
+  display: flex;
+  justify-content: space-between;
 }
 
 .album-song-list-list {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 1fr;
   grid-template-rows: var(--asl-template);
-  grid-auto-columns: 1fr;
+  grid-auto-columns: 49%;
+  column-gap: 2%;
+  overflow-x: auto;
+  scrollbar-width: thin;
   list-style-type: decimal-leading-zero;
   list-style-position: inside;
   margin: 0;
   padding: 0;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  scroll-snap-type: x mandatory;
+}
+
+.album-song-list-list > li {
+  scroll-snap-align: start;
 }
 
 .album-song-list-list > li::before {
@@ -122,23 +140,7 @@ body {
   content: "  ";
 }
 
-.album-song-list-row {
-  display: grid;
-  grid-template: min-content / auto auto;
-}
-
-.album-song-list-row-inline {
-  display: inline-grid;
-  width: inherit;
-  grid-template: min-content / auto auto;
-}
-
-.album-song-list-row > .one,
-.album-song-list-row-inline > .one {
-  justify-self: start;
-}
-
-.album-song-list-row > .two,
-.album-song-list-row-inline > .two {
-  justify-self: end;
+.album-song-list-list > li > span {
+  float: right;
+  font-variant-numeric: tabular-nums;
 }
