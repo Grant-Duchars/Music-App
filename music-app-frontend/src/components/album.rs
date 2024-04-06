@@ -12,6 +12,7 @@ pub fn album(
         title,
         artist,
         songs: _,
+        genre: _,
         runtime: _,
     } = album;
     view! {
