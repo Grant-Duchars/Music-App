@@ -40,7 +40,7 @@ impl Albums {
 
 impl Album {
     /// Creates an `Album`
-    pub fn new<T: ToString>(cover: T, title: T, artist: T, songs: Rc<[Song]>, genre: T) -> Self {
+    pub fn new<T: ToString>(cover: T, title: T, artist: T, songs: Box<[Song]>, genre: T) -> Self {
         let runtime = Self::collect_runtime(&songs);
         Album {
             cover: cover.to_string(),
@@ -52,7 +52,16 @@ impl Album {
         }
     }
 
-    fn collect_runtime(songs: &Rc<[Song]>) -> usize {
+    fn collect_runtime(songs: &Box<[Song]>) -> usize {
         songs.iter().fold(0, |acc, s| acc + s.length)
+    }
+}
+
+impl PartialEq for Album {
+    fn eq(&self, other: &Self) -> bool {
+        self.title == other.title
+            && self.artist == other.artist
+            && self.genre == other.genre
+            && self.runtime == other.runtime
     }
 }

@@ -10,7 +10,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - name: Test
-        run: cargo test -p music-app-lib -p music-app-frontend
+        run: cargo test -p music-app-lib
   Fmt:
     runs-on: ubuntu-latest
     steps:

@@ -19,7 +19,7 @@ pub struct Album {
     /// may have other artists
     pub artist: String,
     /// Sorted list of [`Song`]s
-    pub songs: std::rc::Rc<[Song]>,
+    pub songs: Box<[Song]>,
     /// Genre of the album
     pub genre: String,
     /// Computed from songs list \
@@ -98,7 +98,7 @@ pub fn get_albums() -> Vec<Album> {
         for (i, title) in titles.clone().enumerate() {
             songs.push(Song::new(title, "Doseone", i, runtimes.next().unwrap()))
         }
-        let songs = std::rc::Rc::<[Song]>::from(songs);
+        let songs = Box::<[Song]>::from(songs);
         albums.push(Album::new(
             "/public/cover.png",
             "Sludge Life",
@@ -114,7 +114,7 @@ pub fn get_albums() -> Vec<Album> {
     for (i, title) in titles.clone().enumerate() {
         songs.push(Song::new(title, "Doseone", i, runtimes.next().unwrap()))
     }
-    let songs = std::rc::Rc::<[Song]>::from(songs);
+    let songs = Box::<[Song]>::from(songs);
     albums.push(Album::new(
         "/public/cover.png",
         "Sludge Life",

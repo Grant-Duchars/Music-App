@@ -20,6 +20,18 @@ pub fn album(
             class="album-container"
             on:click=move |_| {
                 selected.update(|s| *s = if *s == Some(num) { None } else { Some(num) });
+                selected
+                    .with(|s| {
+                        if s.is_some() {
+                            let doc = web_sys::window()
+                                .expect("should have a window")
+                                .document()
+                                .expect("should have a document");
+                            doc.get_element_by_id("asl")
+                                .expect("should be loaded")
+                                .scroll_into_view_with_bool(false);
+                        }
+                    });
             }
         >
 
