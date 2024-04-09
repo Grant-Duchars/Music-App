@@ -4,6 +4,7 @@ description = "Frontend UI for the Music App"
 authors.workspace = true
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [dependencies]
 leptos = { version = "0.6", features = ["csr"] }

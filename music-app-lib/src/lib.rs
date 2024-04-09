@@ -1,7 +1,8 @@
-use regex::Regex;
-use std::fs;
+/// ! This library is used to sync structs between the front and backend and so I can use doctests on certain functions
 
+/// Module that includes impls for [`Albums`] and [`Album`]
 mod album;
+/// Module that inclues impls for [`Song`]
 mod song;
 
 /// Struct for interfacing with the static albums list.
@@ -9,6 +10,7 @@ mod song;
 /// use [`Albums::set()`] before using any of its other methods.
 pub struct Albums;
 
+/// Struct for storing data about an album
 #[derive(Debug)]
 pub struct Album {
     /// Url? to cover.jpg
@@ -27,39 +29,22 @@ pub struct Album {
     pub runtime: usize,
 }
 
+/// Struct for storing data about a song
 #[derive(Debug)]
 pub struct Song {
+    /// The title of the song
     pub title: String,
+    /// The artist of the song
     pub artist: String,
+    /// The track number on the song's album
     pub number: usize,
+    /// The duration of the song in seconds
     pub length: usize,
 }
 
 /// Function to mock pulling music data from backend
-#[allow(unused)]
-fn new_get_albums() -> Vec<Album> {
-    let mut albums = Vec::new();
-    let music_library = "./mock-music-data/";
-    let regex = Regex::new(r"cover\.(jpe?g|png)").expect("valid regex");
-    for artist in fs::read_dir(music_library).unwrap() {
-        let artist = artist.unwrap();
-        let mut songs = Vec::<Song>::new();
-        for (index, song) in fs::read_dir(artist.path()).unwrap().enumerate() {
-            let song = song.unwrap();
-            if song.file_name() == "cover.png" {
-                continue;
-            }
-            let file = fs::read_to_string(song.path()).unwrap();
-            println!("{file}");
-        }
-    }
-    albums
-}
-
-use rand::Rng;
-
-/// Function to mock pulling music data from backend
 pub fn get_albums() -> Vec<Album> {
+    use rand::Rng;
     let mut rng = rand::thread_rng();
     let mut runtimes = (0..297).map(|_| rng.gen_range(40..250_usize));
     let titles = [
@@ -123,11 +108,6 @@ pub fn get_albums() -> Vec<Album> {
         "Soundtrack",
     ));
     albums
-}
-
-#[test]
-fn test_mock_albums() {
-    println!("{:#?}", get_albums());
 }
 
 /// Calculates an album or songs' runtime/length from a given number \

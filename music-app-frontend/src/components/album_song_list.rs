@@ -4,21 +4,18 @@ use palette::{Darken, Srgb};
 use wasm_bindgen::JsCast;
 
 #[component]
-#[rustfmt::skip]
 pub fn album_song_list(
     num_per_row: Memo<usize>,
     row_num: usize,
     selected: RwSignal<Option<usize>>,
 ) -> impl IntoView {
     let show = move || {
-        with!(|num_per_row, selected|
-            match selected {
-                Some(s) => row_num == s/num_per_row,
-                None => false
-            }
-        )
+        with!(|num_per_row, selected| match selected {
+            Some(s) => row_num == s / num_per_row,
+            None => false,
+        })
     };
-    // let (show, set_show) 
+    // let (show, set_show)
     view! {
         <Show when=show>
 
