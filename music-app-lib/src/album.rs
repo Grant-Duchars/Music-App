@@ -52,7 +52,7 @@ impl Album {
         }
     }
 
-    fn collect_runtime(songs: &Box<[Song]>) -> usize {
+    fn collect_runtime(songs: &[Song]) -> usize {
         songs.iter().fold(0, |acc, s| acc + s.length)
     }
 }

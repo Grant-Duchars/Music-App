@@ -47,7 +47,7 @@ pub fn album_song_list(
 }
 
 #[component]
-fn song_list(songs: &'static Box<[Song]>) -> impl IntoView {
+fn song_list(songs: &'static [Song]) -> impl IntoView {
     view! {
         <ol
             class="album-song-list-list"
@@ -74,11 +74,11 @@ fn calc_song_list_dimensions(num: usize) -> String {
     }
 }
 
-fn calc_average_color(image: &String) -> String {
+fn calc_average_color(image: &str) -> String {
     calc_average_color_helper(image).unwrap_or(String::from("#000000"))
 }
 
-fn calc_average_color_helper(image: &String) -> Option<String> {
+fn calc_average_color_helper(image: &str) -> Option<String> {
     // Get the html document
     let doc = web_sys::window()?.document()?;
     // Create a new img element for use in the canvas
