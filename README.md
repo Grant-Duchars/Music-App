@@ -1,4 +1,4 @@
-[![Rust CI](https://github.com/Grant-Duchars/Music-App/actions/workflows/ci.yml/badge.svg)](https://github.com/Grant-Duchars/Music-App/actions/workflows/ci.yml) [![Deploy Pages](https://github.com/Grant-Duchars/Music-App/actions/workflows/deploy_gh_pages.yml/badge.svg?branch=main)](https://github.com/Grant-Duchars/Music-App/actions/workflows/deploy_gh_pages.yml)
+[![Rust CI](https://github.com/Grant-Duchars/Music-App/actions/workflows/ci.yml/badge.svg)](https://github.com/Grant-Duchars/Music-App/actions/workflows/ci.yml) [![Deploy Pages](https://github.com/Grant-Duchars/Music-App/actions/workflows/deploy_gh_pages.yml/badge.svg)](https://github.com/Grant-Duchars/Music-App/actions/workflows/deploy_gh_pages.yml)
 
 # Rust Music-App
 
