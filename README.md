@@ -2,4 +2,4 @@
 
 # Rust Music-App
 
-A music player and music library manager built in [Rust](https://www.rust-lang.org/) using [`Tauri`](https://tauri.app/) and [`Leptos`](https://www.leptos.dev/)
+A music player and music library manager built in <a href="https://www.rust-lang.org/" target="_blank">Rust</a> using <a href="https://tauri.app/" target="_blank">`Tauri`</a> and <a href="https://tauri.app/" target="_blank">`Leptos`</a>
