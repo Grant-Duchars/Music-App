@@ -1,7 +1,5 @@
-# Tauri + Leptos
+[![Rust CI](https://github.com/Grant-Duchars/Music-App/actions/workflows/ci.yml/badge.svg)](https://github.com/Grant-Duchars/Music-App/actions/workflows/ci.yml) [![Deploy Pages](https://github.com/Grant-Duchars/Music-App/actions/workflows/deploy_gh_pages.yml/badge.svg?branch=main)](https://github.com/Grant-Duchars/Music-App/actions/workflows/deploy_gh_pages.yml)
 
-This template should help get you started developing with Tauri and Leptos.
+# Rust Music-App
 
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+A music player and music library manager built in [Rust](https://www.rust-lang.org/) using [`Tauri`](https://tauri.app/) and [`Leptos`](https://www.leptos.dev/)
