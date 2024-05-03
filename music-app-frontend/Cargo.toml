@@ -33,3 +33,6 @@ features = [
     "ImageData",
     "EventListener"
 ]
+
+[lints.clippy]
+empty_docs = "allow"
