@@ -1,21 +1,17 @@
+use super::{NumPerRow, SelectedAlbum};
 use leptos::*;
 use music_app_lib::{to_digital, to_words, Albums, Song};
-use palette::{Darken, Srgb};
-use wasm_bindgen::JsCast;
 
 #[component]
-pub fn album_song_list(
-    num_per_row: Memo<usize>,
-    row_num: usize,
-    selected: RwSignal<Option<usize>>,
-) -> impl IntoView {
+pub fn album_song_list(row_num: usize) -> impl IntoView {
+    let NumPerRow(num_per_row) = use_context().expect("num_per_row context");
+    let SelectedAlbum(selected) = use_context().expect("selected album context");
     let show = move || {
         with!(|num_per_row, selected| match selected {
             Some(s) => row_num == s / num_per_row,
             None => false,
         })
     };
-    // let (show, set_show)
     view! {
         <Show when=show>
 
@@ -25,11 +21,11 @@ pub fn album_song_list(
                 view! {
                     <div class="album-song-list" id="asl">
                         <div style=("background-color", average_color)>
-                            <div class="album-song-list-row">
+                            <div class="row">
                                 <h1>{&album.title}</h1>
                                 <h2>{to_words(album.runtime)}</h2>
                             </div>
-                            <div class="album-song-list-row">
+                            <div class="row">
                                 <h2 style="font-style: italic;">{&album.artist}</h2>
                                 <h2>{&album.genre}</h2>
                             </div>
@@ -46,10 +42,10 @@ pub fn album_song_list(
 #[component]
 fn song_list(songs: &'static [Song]) -> impl IntoView {
     view! {
-        <ol
-            class="album-song-list-list"
-            style=("--asl-template", calc_song_list_dimensions(songs.len()))
-        >
+        <ol style=(
+            "--asl-template",
+            calc_song_list_dimensions(songs.len()),
+        )>
 
             {songs
                 .iter()
@@ -76,6 +72,8 @@ fn calc_average_color(image: &str) -> String {
 }
 
 fn calc_average_color_helper(image: &str) -> Option<String> {
+    use palette::Darken;
+    use wasm_bindgen::JsCast;
     // Get the html document
     let doc = web_sys::window()?.document()?;
     // Create a new img element for use in the canvas
@@ -93,7 +91,7 @@ fn calc_average_color_helper(image: &str) -> Option<String> {
     // Get the data of the single pixel which should be the average color of the image
     let color = ctx.get_image_data(0.0, 0.0, 1.0, 1.0).ok()?.data();
     // Darken the color by 30%
-    let color = Srgb::new(color[0], color[1], color[2])
+    let color = palette::Srgb::new(color[0], color[1], color[2])
         .into_linear()
         .darken(0.3);
     // Format the color into a stringified CSS hex value

@@ -1,19 +1,21 @@
 use super::{
     album::{Album, SkeletonAlbum},
     album_song_list::AlbumSongList,
+    NumPerRow, SelectedAlbum,
 };
+use crate::app::WindowWidth;
 use leptos::*;
 use music_app_lib::{Album, Albums};
 
 const ALBUM_GRID_GAP: usize = 13;
 
 #[component]
-pub fn album_grid(
-    window_width: ReadSignal<usize>,
-    album_width: ReadSignal<usize>,
-    selected: RwSignal<Option<usize>>,
-) -> impl IntoView {
-    // Set up album grid dimensions memos
+pub fn album_grid() -> impl IntoView {
+    let WindowWidth(window_width) = use_context().expect("window width context");
+    // Setting up album grid styling
+    let (album_width, _set_album_width) = create_signal(250);
+    provide_context(SelectedAlbum(create_rw_signal(None)));
+    // Set up album grid dimensions memo and contexts
     let num_per_row = create_memo(move |_| {
         with!(|window_width, album_width| {
             let album_with_gap = album_width + ALBUM_GRID_GAP;
@@ -26,6 +28,7 @@ pub fn album_grid(
             num
         })
     });
+    provide_context(NumPerRow(num_per_row));
     let num_rows = create_memo(move |_| {
         // ⌈ len / num_per_row ⌉
         Albums::len()
@@ -71,8 +74,8 @@ pub fn album_grid(
                 key=|id| (id.0, id.1.len())
                 children=move |(row_num, albums)| {
                     view! {
-                        <AlbumGridRow num_per_row row_num albums selected/>
-                        <AlbumSongList num_per_row row_num selected/>
+                        <AlbumGridRow albums row_num/>
+                        <AlbumSongList row_num/>
                     }
                 }
             />
@@ -82,12 +85,8 @@ pub fn album_grid(
 }
 
 #[component]
-fn album_grid_row(
-    num_per_row: Memo<usize>,
-    row_num: usize,
-    albums: Vec<Option<&'static Album>>,
-    selected: RwSignal<Option<usize>>,
-) -> impl IntoView {
+fn album_grid_row(albums: Vec<Option<&'static Album>>, row_num: usize) -> impl IntoView {
+    let NumPerRow(num_per_row) = use_context().expect("num per row context");
     view! {
         <div class="album-grid-row">
             {albums
@@ -97,7 +96,7 @@ fn album_grid_row(
                     match a {
                         Some(album) => {
                             let num = row_num * num_per_row.get_untracked() + i;
-                            view! { <Album album num selected/> }
+                            view! { <Album album num/> }
                         }
                         None => view! { <SkeletonAlbum/> },
                     }
