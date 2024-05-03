@@ -46,7 +46,7 @@ pub struct Song {
 pub fn get_albums() -> Vec<Album> {
     use rand::Rng;
     let mut rng = rand::thread_rng();
-    let mut runtimes = (0..297).map(|_| rng.gen_range(40..250_usize));
+    let mut runtimes = (0..500).map(|_| rng.gen_range(40..250_usize));
     let titles = [
         "Boot Up",
         "Glug Sucks",
@@ -94,16 +94,38 @@ pub fn get_albums() -> Vec<Album> {
     }
     let mut songs = Vec::with_capacity(54);
     for (i, title) in titles.clone().enumerate() {
-        songs.push(Song::new(title, "Doseone", i, runtimes.next().unwrap()))
+        songs.push(Song::new(title, "Doseone", i, runtimes.next().unwrap()));
     }
     for (i, title) in titles.clone().enumerate() {
-        songs.push(Song::new(title, "Doseone", i, runtimes.next().unwrap()))
+        songs.push(Song::new(title, "Doseone", i, runtimes.next().unwrap()));
     }
     let songs = Box::<[Song]>::from(songs);
     albums.push(Album::new(
         "/public/cover.png",
         "Sludge Life",
         "Doseone",
+        songs,
+        "Soundtrack",
+    ));
+    let titles2 = [
+        "Friends vs Friends (Intro)",
+        "It's Not Personal",
+        "Born to Win",
+        "Cash's Song",
+        "Gachasong",
+        "Buddy's Boulevard",
+    ]
+    .into_iter()
+    .enumerate();
+    let mut songs = Vec::with_capacity(6);
+    for (i, title) in titles2 {
+        songs.push(Song::new(title, "Beícoli", i, runtimes.next().unwrap()));
+    }
+    let songs = Box::<[Song]>::from(songs);
+    albums.push(Album::new(
+        "/public/cover.jpg",
+        "Friends vs Friends",
+        "Beícoli",
         songs,
         "Soundtrack",
     ));
