@@ -1,12 +1,10 @@
+use super::SelectedAlbum;
 use leptos::*;
 use music_app_lib::Album;
 
 #[component]
-pub fn album(
-    album: &'static Album,
-    num: usize,
-    selected: RwSignal<Option<usize>>,
-) -> impl IntoView {
+pub fn album(album: &'static Album, num: usize) -> impl IntoView {
+    let SelectedAlbum(selected) = use_context().expect("selected album context");
     let Album {
         cover,
         title,
