@@ -81,7 +81,7 @@ fn right_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
                                 value="0"
                                 max="100"
                                 step="1"
-                                style="width:130px;margin-right:8px;"
+                                style="width:130px;margin-right:7px;"
                             />
                         </button>
                     }
@@ -153,7 +153,7 @@ fn seek_bar(audio: NodeRef<html::Audio>) -> impl IntoView {
                     </Show>
                     <Show
                         when=move || track_title.get().is_some()
-                        fallback=move || view! { <p>"Nothing Playing"</p> }
+                        fallback=|| view! { <p>"Nothing Playing"</p> }
                     >
                         <p>{track_title}</p>
                     </Show>

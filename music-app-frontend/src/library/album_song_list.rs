@@ -74,13 +74,14 @@ fn calc_average_color(image: &str) -> String {
 fn calc_average_color_helper(image: &str) -> Option<String> {
     use palette::Darken;
     use wasm_bindgen::JsCast;
+    use web_sys::*;
     // Get the html document
-    let doc = web_sys::window()?.document()?;
+    let doc = window()?.document()?;
     // Create a new img element for use in the canvas
-    let img: web_sys::HtmlImageElement = doc.create_element("img").ok()?.unchecked_into();
+    let img: HtmlImageElement = doc.create_element("img").ok()?.unchecked_into();
     // Create a new canvas element for drawing the image on
-    let canvas: web_sys::HtmlCanvasElement = doc.create_element("canvas").ok()?.unchecked_into();
-    let ctx: web_sys::CanvasRenderingContext2d = canvas.get_context("2d").ok()??.unchecked_into();
+    let canvas: HtmlCanvasElement = doc.create_element("canvas").ok()?.unchecked_into();
+    let ctx: CanvasRenderingContext2d = canvas.get_context("2d").ok()??.unchecked_into();
     // Set the src for the img element to the provided image
     img.set_src(image);
     img.set_attribute("crossOrigin", "").ok()?;
@@ -90,10 +91,10 @@ fn calc_average_color_helper(image: &str) -> Option<String> {
         .ok()?;
     // Get the data of the single pixel which should be the average color of the image
     let color = ctx.get_image_data(0.0, 0.0, 1.0, 1.0).ok()?.data();
-    // Darken the color by 30%
+    // Darken the color by 10%
     let color = palette::Srgb::new(color[0], color[1], color[2])
         .into_linear()
-        .darken(0.3);
+        .darken(0.1);
     // Format the color into a stringified CSS hex value
     let [red, green, blue]: [u8; 3] = color.into_format().into();
     Some(format!("#{red:x}{green:x}{blue:x}"))
