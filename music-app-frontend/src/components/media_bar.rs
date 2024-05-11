@@ -12,7 +12,7 @@ pub fn media_bar() -> impl IntoView {
             src="https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b1/Haussperling2008.ogg/Haussperling2008.ogg.mp3"
         ></audio>
         <div id="now-playing-image">
-            <img src="public/cover.png"/>
+            <img src="public/mock-covers/sl.jpg"/>
         </div>
         <div id="media-bar">
             <LeftMediaControls audio/>
