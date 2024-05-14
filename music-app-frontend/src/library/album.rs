@@ -4,7 +4,7 @@ use music_app_lib::Album;
 
 #[component]
 pub fn album(album: &'static Album, num: usize) -> impl IntoView {
-    let SelectedAlbum(selected) = use_context().expect("selected album context");
+    let SelectedAlbum(selected) = use_context().expect("context provided");
     let Album {
         cover,
         title,
@@ -22,9 +22,9 @@ pub fn album(album: &'static Album, num: usize) -> impl IntoView {
                     .with(|s| {
                         if s.is_some() {
                             let doc = web_sys::window()
-                                .expect("should have a window")
+                                .expect("should be loaded")
                                 .document()
-                                .expect("should have a document");
+                                .expect("should be loaded");
                             doc.get_element_by_id("asl")
                                 .expect("should be loaded")
                                 .scroll_into_view_with_bool(false);

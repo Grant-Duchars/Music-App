@@ -4,8 +4,8 @@ use music_app_lib::{to_digital, to_words, Albums, Song};
 
 #[component]
 pub fn album_song_list(row_num: usize) -> impl IntoView {
-    let NumPerRow(num_per_row) = use_context().expect("num_per_row context");
-    let SelectedAlbum(selected) = use_context().expect("selected album context");
+    let NumPerRow(num_per_row) = use_context().expect("context provided");
+    let SelectedAlbum(selected) = use_context().expect("context provided");
     let show = move || {
         with!(|num_per_row, selected| match selected {
             Some(s) => row_num == s / num_per_row,

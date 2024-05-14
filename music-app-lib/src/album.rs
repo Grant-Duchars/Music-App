@@ -36,6 +36,14 @@ impl Albums {
     pub fn len() -> Option<usize> {
         Some(Self::get()?.len())
     }
+
+    /// Get the total runtime of the albums list
+    pub fn runtime() -> usize {
+        match Self::get() {
+            Some(albums) => albums.iter().map(|a| a.runtime).sum(),
+            None => 0,
+        }
+    }
 }
 
 impl Album {

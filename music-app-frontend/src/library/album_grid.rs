@@ -5,15 +5,15 @@ use super::{
 };
 use crate::app::WindowWidth;
 use leptos::*;
-use music_app_lib::{Album, Albums};
+use music_app_lib::{to_words, Album, Albums};
 
 const ALBUM_GRID_GAP: usize = 13;
 
 #[component]
 pub fn album_grid() -> impl IntoView {
-    let WindowWidth(window_width) = use_context().expect("window width context");
+    let WindowWidth(window_width) = use_context().expect("context provided");
     // Setting up album grid styling
-    let (album_width, _set_album_width) = create_signal(250);
+    let album_width = create_rw_signal(275);
     provide_context(SelectedAlbum(create_rw_signal(None)));
     // Set up album grid dimensions memo and contexts
     let num_per_row = create_memo(move |_| {
@@ -32,7 +32,7 @@ pub fn album_grid() -> impl IntoView {
     let num_rows = create_memo(move |_| {
         // ⌈ len / num_per_row ⌉
         Albums::len()
-            .expect("albums should be initialized")
+            .expect("should be loaded")
             .div_ceil(num_per_row.get())
     });
     // Set up album grid signals and effects
@@ -64,29 +64,59 @@ pub fn album_grid() -> impl IntoView {
         })
     });
     view! {
-        <div
-            id="album-grid"
-            style=("--album-width", move || format!("{}px", album_width.get()))
-            style=("--album-grid-gap", format!("{}px", ALBUM_GRID_GAP))
-        >
-            <For
-                each=move || rows.get().into_iter().enumerate()
-                key=|id| (id.0, id.1.len())
-                children=move |(row_num, albums)| {
-                    view! {
-                        <AlbumGridRow albums row_num/>
-                        <AlbumSongList row_num/>
+        <div>
+            <AlbumGridBar album_width/>
+            <div
+                id="album-grid"
+                style=("--album-width", move || format!("{}px", album_width.get()))
+                style=("--album-grid-gap", format!("{}px", ALBUM_GRID_GAP))
+            >
+                <For
+                    each=move || rows.get().into_iter().enumerate()
+                    key=|id| (id.0, id.1.len())
+                    children=move |(row_num, albums)| {
+                        view! {
+                            <AlbumGridRow albums row_num/>
+                            <AlbumSongList row_num/>
+                        }
                     }
-                }
-            />
+                />
 
+            </div>
+        </div>
+    }
+}
+
+#[component]
+#[allow(unused_must_use)]
+fn album_grid_bar(album_width: RwSignal<usize>) -> impl IntoView {
+    let album_width_input = create_node_ref::<html::Input>();
+    view! {
+        <div id="album-grid-bar" class="row">
+            <input type="search" placeholder="Search"/>
+            <div class="row">
+                <p>{to_words(Albums::runtime())}</p>
+                <input
+                    node_ref=album_width_input
+                    type="range"
+                    min="175"
+                    max="300"
+                    value=album_width.get_untracked()
+                    step="1"
+                    on:input=move |_| {
+                        let album_width_input = album_width_input.get().expect("should be loaded");
+                        album_width.set(album_width_input.value_as_number() as usize);
+                    }
+                />
+
+            </div>
         </div>
     }
 }
 
 #[component]
 fn album_grid_row(albums: Vec<Option<&'static Album>>, row_num: usize) -> impl IntoView {
-    let NumPerRow(num_per_row) = use_context().expect("num per row context");
+    let NumPerRow(num_per_row) = use_context().expect("context provided");
     view! {
         <div class="album-grid-row">
             {albums
