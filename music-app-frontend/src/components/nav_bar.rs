@@ -34,7 +34,6 @@ pub fn nav_bar() -> impl IntoView {
                     </A>
                 </li>
             </menu>
-        // <input style=("grid-area", "AlbumSize") type="range" min="0" max="300" value="250"/>
         </nav>
     }
 }

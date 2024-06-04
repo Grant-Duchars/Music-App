@@ -8,7 +8,7 @@ pub fn media_bar() -> impl IntoView {
     let audio = create_node_ref::<html::Audio>();
     view! {
         <audio
-            _ref=audio
+            node_ref=audio
             src="https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b1/Haussperling2008.ogg/Haussperling2008.ogg.mp3"
         ></audio>
         <div id="now-playing-image">
@@ -35,7 +35,7 @@ fn left_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
                 <Icon id="media-back"/>
             </button>
             <button on:click=move |_| {
-                let audio = audio.get().expect("audio should be loaded");
+                let audio = audio.get().expect("should be loaded");
                 if audio.paused() {
                     let _ = audio.play();
                     playing.set(true);
@@ -61,12 +61,6 @@ fn right_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
     let _ = audio;
     let volume_bar = create_node_ref::<html::Button>();
     let volume_bar_hover = create_rw_signal(false);
-    use_event_listener(volume_bar, ev::mouseenter, move |_| {
-        volume_bar_hover.set(true);
-    });
-    use_event_listener(volume_bar, ev::mouseleave, move |_| {
-        volume_bar_hover.set(false);
-    });
     view! {
         <div class="row">
             <Show
@@ -74,11 +68,17 @@ fn right_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
                 fallback=move || {
                     view! {
                         // Volume Bar
-                        <button _ref=volume_bar style="width:175px;">
+                        <button
+                            node_ref=volume_bar
+                            style="width:175px;"
+                            on:mouseleave=move |_| {
+                                volume_bar_hover.set(false);
+                            }
+                        >
+
                             <Icon id="speaker"/>
                             <input
                                 type="range"
-                                value="0"
                                 max="100"
                                 step="1"
                                 style="width:130px;margin-right:7px;"
@@ -89,7 +89,13 @@ fn right_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
             >
 
                 // Right Media Controls
-                <button _ref=volume_bar>
+                <button
+                    node_ref=volume_bar
+                    on:mouseenter=move |_| {
+                        volume_bar_hover.set(true);
+                    }
+                >
+
                     <Icon id="speaker"/>
                 </button>
                 <button>
@@ -114,34 +120,19 @@ fn right_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
 fn seek_bar(audio: NodeRef<html::Audio>) -> impl IntoView {
     let seek_bar = create_node_ref::<html::Input>();
     let seek_bar_mouse_down = create_rw_signal(false);
-    // let track_num = create_rw_signal(Option::<&String>::None);
-    // let track_title = create_rw_signal(Option::<&String>::None);
-    // let track_artist = create_rw_signal(Option::<&String>::None);
     let track_num = create_rw_signal(Some("1"));
     let track_title = create_rw_signal(Some("Boot Up"));
     let track_artist = create_rw_signal(Some("Doseone"));
     // Event Listeners
-    use_event_listener(seek_bar, ev::change, move |_| {
-        let audio = audio.get().expect("audio should be loaded");
-        let seek_bar = seek_bar.get().expect("input should be loaded");
-        let percent = seek_bar.value_as_number() / 100.0;
-        audio.set_current_time(audio.duration() * percent);
-    });
-    use_event_listener(seek_bar, ev::mousedown, move |_| {
-        seek_bar_mouse_down.set(true);
-    });
-    use_event_listener(seek_bar, ev::mouseup, move |_| {
-        seek_bar_mouse_down.set(false);
-    });
     use_event_listener(audio, ev::timeupdate, move |_| {
         if !seek_bar_mouse_down.get_untracked() {
-            let audio = audio.get().expect("audio should be loaded");
-            let seek_bar = seek_bar.get().expect("input should be loaded");
+            let audio = audio.get().expect("should be loaded");
+            let seek_bar = seek_bar.get().expect("should be loaded");
             seek_bar.set_value_as_number(audio.current_time() / audio.duration() * 100.0);
         }
     });
     use_event_listener(audio, ev::loadeddata, move |_| {
-        let seek_bar = seek_bar.get().expect("input should be loaded");
+        let seek_bar = seek_bar.get().expect("should be loaded");
         seek_bar.set_value_as_number(0.0);
     });
     view! {
@@ -164,10 +155,30 @@ fn seek_bar(audio: NodeRef<html::Audio>) -> impl IntoView {
                     </Show>
                 </div>
                 <div>
-                    <p>{music_app_lib::to_digital(10)}</p>
+                    <p>{music_app_lib::runtime::to_digital(10)}</p>
                 </div>
             </div>
-            <input _ref=seek_bar type="range" value="0" max="100" step="1"/>
+            <input
+                node_ref=seek_bar
+                type="range"
+                max="100"
+                step="1"
+                on:mousedown=move |_| {
+                    seek_bar_mouse_down.set(true);
+                }
+
+                on:mouseup=move |_| {
+                    seek_bar_mouse_down.set(false);
+                }
+
+                on:change=move |_| {
+                    let audio = audio.get().expect("should be loaded");
+                    let seek_bar = seek_bar.get().expect("should be loaded");
+                    let percent = seek_bar.value_as_number() / 100.0;
+                    audio.set_current_time(audio.duration() * percent);
+                }
+            />
+
         </div>
     }
 }

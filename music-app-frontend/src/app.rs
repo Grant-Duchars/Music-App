@@ -15,13 +15,14 @@ extern "C" {
 pub struct WindowWidth(pub ReadSignal<usize>);
 
 #[component]
-#[allow(unused_must_use)] // Warns about event listener closure not being used when it is
+#[allow(unused_must_use)]
 pub fn App() -> impl IntoView {
     // Setting up window width signal and event listener
     let (window_width, set_window_width) = create_signal(get_window_width());
     use_event_listener(use_window(), ev::resize, move |_| {
         set_window_width.set(get_window_width());
     });
+    // Pass down the window width to the album grid component
     provide_context(WindowWidth(window_width));
     view! {
         <Router>
@@ -43,9 +44,9 @@ pub fn App() -> impl IntoView {
 
 fn get_window_width() -> usize {
     web_sys::window()
-        .expect("should have a window")
+        .expect("should be loaded")
         .inner_width()
-        .expect("should have a width value")
+        .expect("should have a value")
         .as_f64()
         .expect("should be a number")
         .trunc() as usize

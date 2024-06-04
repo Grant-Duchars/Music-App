@@ -4,7 +4,7 @@ mod library;
 
 use app::App;
 use leptos::*;
-use music_app_lib::{get_albums, Albums};
+use music_app_lib::{mocking::get_albums, Albums};
 
 fn main() {
     console_error_panic_hook::set_once();

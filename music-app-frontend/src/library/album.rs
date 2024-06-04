@@ -2,9 +2,10 @@ use super::SelectedAlbum;
 use leptos::*;
 use music_app_lib::Album;
 
+// test
 #[component]
 pub fn album(album: &'static Album, num: usize) -> impl IntoView {
-    let SelectedAlbum(selected) = use_context().expect("selected album context");
+    let SelectedAlbum(selected) = use_context().expect("context provided");
     let Album {
         cover,
         title,
@@ -18,20 +19,21 @@ pub fn album(album: &'static Album, num: usize) -> impl IntoView {
             class="album-container"
             on:click=move |_| {
                 selected.update(|s| *s = if *s == Some(num) { None } else { Some(num) });
-                selected
-                    .with(|s| {
-                        if s.is_some() {
-                            let doc = web_sys::window()
-                                .expect("should have a window")
-                                .document()
-                                .expect("should have a document");
-                            doc.get_element_by_id("asl")
-                                .expect("should be loaded")
-                                .scroll_into_view_with_bool(false);
-                        }
-                    });
             }
         >
+
+            // selected
+            // .with(|s| {
+            // if s.is_some() {
+            // let doc = web_sys::window()
+            // .expect("should be loaded")
+            // .document()
+            // .expect("should be loaded");
+            // doc.get_element_by_id("asl")
+            // .expect("should be loaded")
+            // .scroll_into_view_with_bool(false);
+            // }
+            // });
 
             <div class="album-cover-image">
                 <img src=cover/>

@@ -1,11 +1,14 @@
 use super::{NumPerRow, SelectedAlbum};
 use leptos::*;
-use music_app_lib::{to_digital, to_words, Albums, Song};
+use music_app_lib::{
+    runtime::{to_digital, to_words},
+    Albums, Song,
+};
 
 #[component]
 pub fn album_song_list(row_num: usize) -> impl IntoView {
-    let NumPerRow(num_per_row) = use_context().expect("num_per_row context");
-    let SelectedAlbum(selected) = use_context().expect("selected album context");
+    let NumPerRow(num_per_row) = use_context().expect("context provided");
+    let SelectedAlbum(selected) = use_context().expect("context provided");
     let show = move || {
         with!(|num_per_row, selected| match selected {
             Some(s) => row_num == s / num_per_row,
@@ -21,11 +24,11 @@ pub fn album_song_list(row_num: usize) -> impl IntoView {
                 view! {
                     <div class="album-song-list" id="asl">
                         <div style=("background-color", average_color)>
-                            <div class="row">
+                            <div class="row space-between">
                                 <h1>{&album.title}</h1>
                                 <h2>{to_words(album.runtime)}</h2>
                             </div>
-                            <div class="row">
+                            <div class="row space-between">
                                 <h2 style="font-style: italic;">{&album.artist}</h2>
                                 <h2>{&album.genre}</h2>
                             </div>
