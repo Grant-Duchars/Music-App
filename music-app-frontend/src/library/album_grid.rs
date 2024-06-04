@@ -3,9 +3,9 @@ use super::{
     album_song_list::AlbumSongList,
     NumPerRow, SelectedAlbum,
 };
-use crate::app::WindowWidth;
+use crate::{app::WindowWidth, components::Icon};
 use leptos::*;
-use music_app_lib::{to_words, Album, Albums};
+use music_app_lib::{runtime::to_words, Album, Albums};
 
 const ALBUM_GRID_GAP: usize = 13;
 
@@ -92,10 +92,13 @@ pub fn album_grid() -> impl IntoView {
 fn album_grid_bar(album_width: RwSignal<usize>) -> impl IntoView {
     let album_width_input = create_node_ref::<html::Input>();
     view! {
-        <div id="album-grid-bar" class="row">
-            <input type="search" placeholder="Search"/>
+        <div id="album-grid-bar">
             <div class="row">
-                <p>{to_words(Albums::runtime())}</p>
+                <Icon id="search" size=30 color="var(--color-light)" flipped=true/>
+                <input type="search" placeholder="Search" incremental="true" class="full-width"/>
+            </div>
+            <div class="row">
+                <p>{to_words(Albums::runtime())}" : "{Albums::total_tracks()}" tracks"</p>
                 <input
                     node_ref=album_width_input
                     type="range"

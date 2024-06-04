@@ -54,15 +54,28 @@ p {
 
 .row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
+.space-between {
+  justify-content: space-between;
+}
+
+.full-width {
+  width: 100%;
+}
+
 .icon {
-  width: 1.2em;
   height: 1.2em;
+  width: 1.2em;
   margin: 0 3px;
   fill: var(--color-light-dim);
+}
+
+.icon > svg {
+  height: inherit;
+  width: inherit;
+  fill: inherit;
 }
 
 /* Nav Bar Styling */
@@ -99,13 +112,9 @@ nav a {
 }
 
 nav a:hover,
-nav a:hover > svg {
-  color: var(--color-light);
-  fill: var(--color-light);
-}
-
+nav a:hover svg,
 [aria-current="page"],
-[aria-current="page"] > svg {
+[aria-current="page"] svg {
   color: var(--color-light);
   fill: var(--color-light);
 }
@@ -204,14 +213,40 @@ main {
 
 #album-grid-bar {
   position: sticky;
+  display: flex;
   top: 0;
-  width: 100%;
+  width: calc(100% - 26px);
   height: 30px;
   z-index: 1;
-  background-color: #1e1e1e9e;
+  padding: 0 13px;
+  background-color: #1e1e1eae;
   background-blend-mode: darken;
   box-shadow: var(--box-shadow);
   border-bottom: thin solid var(--color-dark-dim);
+}
+
+#album-grid-bar > div:first-child {
+  flex-grow: 1;
+}
+
+input[type="search"] {
+  height: 100%;
+  border: none;
+  background-color: #00000000;
+  font-family: "PlusJakartaSans";
+  font-weight: var(--font-weight);
+}
+
+input[type="search"]::placeholder {
+  color: var(--color-light);
+}
+
+input[type="search"]:focus {
+  outline: none;
+}
+
+#album-grid-bar p {
+  padding: 0 13px;
 }
 
 #album-grid {
@@ -236,6 +271,7 @@ main {
   justify-content: center;
   text-align: center;
   cursor: pointer;
+  scroll-snap-align: start;
   width: var(--album-width);
 }
 

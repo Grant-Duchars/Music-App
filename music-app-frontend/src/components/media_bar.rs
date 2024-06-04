@@ -155,7 +155,7 @@ fn seek_bar(audio: NodeRef<html::Audio>) -> impl IntoView {
                     </Show>
                 </div>
                 <div>
-                    <p>{music_app_lib::to_digital(10)}</p>
+                    <p>{music_app_lib::runtime::to_digital(10)}</p>
                 </div>
             </div>
             <input

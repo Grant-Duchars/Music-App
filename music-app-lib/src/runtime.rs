@@ -1,6 +1,6 @@
 //! # Examples
 //! ```
-//! use music_app_lib::to_words;
+//! use music_app_lib::runtime::to_words;
 //! // Formats both non-plural ...
 //! assert_eq!("1 sec", to_words(1));
 //! assert_eq!("1 min, 1 sec", to_words(61));
@@ -20,7 +20,7 @@
 //! // ... and that ... is when the world ... will end.
 //! ```
 //! ```
-//! use music_app_lib::to_digital;
+//! use music_app_lib::runtime::to_digital;
 //!
 //! assert_eq!("0:01", to_digital(1));
 //! assert_eq!("1:01", to_digital(61));
@@ -40,7 +40,7 @@
 /// Calculates an album or song's runtime/length from a given number \
 /// # Examples
 /// ```
-/// use music_app_lib::calc_runtime;
+/// use music_app_lib::runtime::calc_runtime;
 ///
 /// assert_eq!([0, 0, 0, 0, 0, 1], calc_runtime(1));
 /// assert_eq!([0, 0, 0, 0, 1, 1], calc_runtime(61));
@@ -62,7 +62,7 @@ pub fn calc_runtime(num: usize) -> [usize; 6] {
     let mut num = num;
     let mut runtime = CONSTS.iter().map(move |c| {
         let conv = num / c;
-        num = num % c;
+        num %= c;
         conv
     });
     [
@@ -78,7 +78,7 @@ pub fn calc_runtime(num: usize) -> [usize; 6] {
 /// Converts a number to a string based on how many seconds it represents \
 /// # Examples
 /// ```
-/// use music_app_lib::to_words;
+/// use music_app_lib::runtime::to_words;
 /// // Formats both non-plural ...
 /// assert_eq!("1 sec", to_words(1));
 /// assert_eq!("1 min, 1 sec", to_words(61));
@@ -112,16 +112,11 @@ pub fn to_words(num: usize) -> String {
         })
         .rev();
     let mut output = String::new();
-    for num in runtime {
-        match num {
-            Some(s) => {
-                output = if output.as_str() != "" {
-                    format!("{s}, {output}")
-                } else {
-                    format!("{s}")
-                }
-            }
-            None => (),
+    for num in runtime.flatten() {
+        output = if output.as_str() != "" {
+            format!("{num}, {output}")
+        } else {
+            num
         }
     }
     output
@@ -130,7 +125,7 @@ pub fn to_words(num: usize) -> String {
 /// Converts a number to a string based on how many seconds it represents \
 /// # Examples
 /// ```
-/// use music_app_lib::to_digital;
+/// use music_app_lib::runtime::to_digital;
 ///
 /// assert_eq!("0:01", to_digital(1));
 /// assert_eq!("1:01", to_digital(61));
@@ -147,11 +142,14 @@ pub fn to_words(num: usize) -> String {
 /// assert_eq!("999:51:06:23:59:59", to_digital(31_449_599_999));
 /// ```
 pub fn to_digital(num: usize) -> String {
-    let mut runtime = calc_runtime(num)
-        .into_iter()
-        .zip([':'; 6])
-        .map(|(num, delim)| format!("{num:0>2}{delim}"))
-        .collect::<String>();
+    use std::fmt::Write;
+    let mut runtime = calc_runtime(num).into_iter().zip([':'; 6]).fold(
+        String::new(),
+        |mut output, (num, delim)| {
+            let _ = write!(output, "{num:0>2}{delim}");
+            output
+        },
+    );
     runtime.pop();
     let runtime = runtime.trim_start_matches(['0', ':']);
     if runtime.len() <= 2 {
