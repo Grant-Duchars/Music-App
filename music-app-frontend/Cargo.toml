@@ -8,8 +8,8 @@ license.workspace = true
 
 [dependencies]
 leptos = { version = "0.6", features = ["csr"] }
-leptos_router = { version = "0.6.11", features = ["csr"] }
-leptos-use = "0.10"
+leptos_router = { version = "0.6", features = ["csr"] }
+leptos-use = "0.13"
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
