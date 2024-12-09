@@ -14,6 +14,10 @@ impl Albums {
         self.albums.len()
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.albums.is_empty()
+    }
+
     /// Gets the total number of tracks among albums in the albums list
     pub fn total_tracks(&self) -> usize {
         self.albums.iter().map(|a| a.tracks.len()).sum()
