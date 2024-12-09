@@ -1,25 +1,32 @@
 mod album;
 mod album_grid;
-mod album_song_list;
+mod album_track_list;
 
 use album_grid::AlbumGrid;
-use leptos::*;
-use leptos_router::*;
+use leptos::prelude::*;
+use leptos_router::{
+    components::{Outlet, ParentRoute, Route},
+    hooks::use_query,
+    params::Params,
+    path, MatchNestedRoutes,
+};
 
+// Context Structs
 #[derive(Copy, Clone)]
 struct NumPerRow(pub Memo<usize>);
-
 #[derive(Copy, Clone)]
 struct SelectedAlbum(pub RwSignal<Option<usize>>);
+//
 
 #[component(transparent)]
-pub fn library_route() -> impl IntoView {
+pub fn library_routes() -> impl MatchNestedRoutes + Clone {
     view! {
-        <Route path="library" view=|| view! { <Outlet/> }>
-            <Route path="" view=AlbumGrid/>
-            <Route path="search" view=Search/>
-        </Route>
+        <ParentRoute path=path!("/library") view=|| view! { <Outlet/> }>
+            <Route path=path!("") view=AlbumGrid/>
+            <Route path=path!("/search") view=Search/>
+        </ParentRoute>
     }
+    .into_inner()
 }
 
 #[derive(Params, PartialEq, Clone, Debug)]

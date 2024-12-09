@@ -1,11 +1,13 @@
 use super::Icon;
-use leptos::*;
+use leptos::ev;
+use leptos::html;
+use leptos::prelude::*;
 use leptos_use::use_event_listener;
 
 #[component]
 #[allow(unused_must_use)]
 pub fn media_bar() -> impl IntoView {
-    let audio = create_node_ref::<html::Audio>();
+    let audio = NodeRef::<html::Audio>::new();
     view! {
         <audio
             node_ref=audio
@@ -25,8 +27,8 @@ pub fn media_bar() -> impl IntoView {
 #[component]
 #[allow(unused_must_use)]
 fn left_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
-    let playing = create_rw_signal(false);
-    use_event_listener(audio, ev::ended, move |_| {
+    let playing = RwSignal::new(false);
+    let _ = use_event_listener(audio, ev::ended, move |_| {
         playing.set(false);
     });
     view! {
@@ -59,8 +61,8 @@ fn left_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
 #[allow(unused_must_use)]
 fn right_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
     let _ = audio;
-    let volume_bar = create_node_ref::<html::Button>();
-    let volume_bar_hover = create_rw_signal(false);
+    let volume_bar = NodeRef::<html::Button>::new();
+    let volume_bar_hover = RwSignal::new(false);
     view! {
         <div class="row">
             <Show
@@ -118,20 +120,20 @@ fn right_media_controls(audio: NodeRef<html::Audio>) -> impl IntoView {
 #[component]
 #[allow(unused_must_use)]
 fn seek_bar(audio: NodeRef<html::Audio>) -> impl IntoView {
-    let seek_bar = create_node_ref::<html::Input>();
-    let seek_bar_mouse_down = create_rw_signal(false);
-    let track_num = create_rw_signal(Some("1"));
-    let track_title = create_rw_signal(Some("Boot Up"));
-    let track_artist = create_rw_signal(Some("Doseone"));
+    let seek_bar = NodeRef::<html::Input>::new();
+    let seek_bar_mouse_down = RwSignal::new(false);
+    let track_num = RwSignal::new(Some("1"));
+    let track_title = RwSignal::new(Some("Boot Up"));
+    let track_artist = RwSignal::new(Some("Doseone"));
     // Event Listeners
-    use_event_listener(audio, ev::timeupdate, move |_| {
+    let _ = use_event_listener(audio, ev::timeupdate, move |_| {
         if !seek_bar_mouse_down.get_untracked() {
             let audio = audio.get().expect("should be loaded");
             let seek_bar = seek_bar.get().expect("should be loaded");
             seek_bar.set_value_as_number(audio.current_time() / audio.duration() * 100.0);
         }
     });
-    use_event_listener(audio, ev::loadeddata, move |_| {
+    let _ = use_event_listener(audio, ev::loadeddata, move |_| {
         let seek_bar = seek_bar.get().expect("should be loaded");
         seek_bar.set_value_as_number(0.0);
     });

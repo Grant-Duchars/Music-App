@@ -1,74 +1,45 @@
-use super::{Album, Albums, Song};
-use std::{mem::MaybeUninit, rc::Rc, sync::Once};
-
-static mut ALBUMS: MaybeUninit<Rc<[Album]>> = MaybeUninit::uninit();
-static INIT_ALBUMS: Once = Once::new();
+use super::{Album, Albums, Track};
 
 impl Albums {
-    /// Sets the albums list
-    pub fn set(albums: Vec<Album>) {
-        unsafe {
-            match INIT_ALBUMS.is_completed() {
-                false => INIT_ALBUMS.call_once(|| {
-                    ALBUMS.write(Rc::from(albums));
-                }),
-                true => {
-                    ALBUMS.assume_init_drop();
-                    ALBUMS.write(Rc::from(albums));
-                }
-            }
-        }
+    /// Creates a new `Albums` struct
+    pub fn new(albums: Vec<Album>) -> Self {
+        Self { albums }
     }
-    /// Gets a reference to the albums list
-    pub fn get() -> Option<&'static [Album]> {
-        unsafe {
-            match INIT_ALBUMS.is_completed() {
-                true => Some(ALBUMS.assume_init_ref()),
-                false => None,
-            }
-        }
+
+    pub fn check(&self, index: usize) -> bool {
+        index < self.albums.len()
     }
-    /// Gets a reference to an album at the given index
-    pub fn get_album(index: usize) -> Option<&'static Album> {
-        Self::get()?.get(index)
-    }
-    /// Gets the length of the albums list
-    pub fn len() -> Option<usize> {
-        Some(Self::get()?.len())
+
+    pub fn len(&self) -> usize {
+        self.albums.len()
     }
 
     /// Gets the total number of tracks among albums in the albums list
-    pub fn total_tracks() -> usize {
-        match Self::get() {
-            Some(albums) => albums.iter().map(|a| a.songs.len()).sum(),
-            None => 0,
-        }
+    pub fn total_tracks(&self) -> usize {
+        self.albums.iter().map(|a| a.tracks.len()).sum()
     }
 
     /// Get the total runtime of the albums list
-    pub fn runtime() -> usize {
-        match Self::get() {
-            Some(albums) => albums.iter().map(|a| a.runtime).sum(),
-            None => 0,
-        }
+    pub fn runtime(&self) -> usize {
+        self.albums.iter().map(|a| a.runtime).sum()
     }
 }
 
 impl Album {
     /// Creates an `Album`
-    pub fn new<T: ToString>(cover: T, title: T, artist: T, songs: Box<[Song]>, genre: T) -> Self {
-        let runtime = Self::collect_runtime(&songs);
+    pub fn new<T: ToString>(cover: T, title: T, artist: T, tracks: Vec<Track>, genre: T) -> Self {
+        let runtime = Self::collect_runtime(&tracks);
         Album {
             cover: cover.to_string(),
             title: title.to_string(),
             artist: artist.to_string(),
-            songs,
+            tracks,
             genre: genre.to_string(),
             runtime,
         }
     }
 
-    fn collect_runtime(songs: &[Song]) -> usize {
+    fn collect_runtime(songs: &[Track]) -> usize {
         songs.iter().fold(0, |acc, s| acc + s.length)
     }
 }
