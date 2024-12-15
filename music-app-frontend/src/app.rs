@@ -1,8 +1,10 @@
 use crate::components::{media_bar::MediaBar, nav_bar::NavBar};
-use crate::library::LibraryRoute;
-use leptos::*;
-use leptos_router::{Redirect, Route, Router, Routes};
+use crate::library::LibraryRoutes;
+use leptos::{ev, prelude::*};
+use leptos_router::components::{Router, Routes};
 use leptos_use::{use_event_listener, use_window};
+use music_app_lib::{mocking::get_albums, Albums};
+use reactive_stores::Store;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -15,24 +17,26 @@ extern "C" {
 pub struct WindowWidth(pub ReadSignal<usize>);
 
 #[component]
-#[allow(unused_must_use)]
 pub fn App() -> impl IntoView {
+    let store = Store::new(Albums::new(get_albums()));
+    provide_context(store);
+
     // Setting up window width signal and event listener
-    let (window_width, set_window_width) = create_signal(get_window_width());
-    use_event_listener(use_window(), ev::resize, move |_| {
+    let (window_width, set_window_width) = signal(get_window_width());
+    let _ = use_event_listener(use_window(), ev::resize, move |_| {
         set_window_width.set(get_window_width());
     });
-    // Pass down the window width to the album grid component
     provide_context(WindowWidth(window_width));
+
+    let (_is_routing, set_is_routing) = signal(false);
     view! {
-        <Router>
+        <Router set_is_routing>
             <header>
                 <NavBar/>
             </header>
             <main>
-                <Routes>
-                    <Route path="" view=|| view! { <Redirect path="library"/> }/>
-                    <LibraryRoute/>
+                <Routes fallback=|| "This page could not be found.">
+                    <LibraryRoutes/>
                 </Routes>
             </main>
             <footer>

@@ -1,4 +1,4 @@
-use super::{Album, Song};
+use super::{Album, Track};
 
 /// Function to mock pulling music data from backend
 pub fn get_albums() -> Vec<Album> {
@@ -204,11 +204,11 @@ fn create_album(
     let titles = titles.unwrap_or(Box::from_iter(
         (1..rng.gen_range(6..62)).map(|i| format!("Song {i}")),
     ));
-    let songs = Box::from_iter(
+    let tracks = Vec::from_iter(
         titles
             .iter()
             .enumerate()
-            .map(|(i, t)| Song::new(t, &"Artist".into(), i, rng.gen_range(40..250_usize))),
+            .map(|(i, t)| Track::new(t, &"Artist".into(), i, rng.gen_range(40..250_usize))),
     );
-    Album::new(cover, title, artist, songs, genre.unwrap_or("Soundtrack"))
+    Album::new(cover, title, artist, tracks, genre.unwrap_or("Soundtrack"))
 }

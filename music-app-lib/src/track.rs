@@ -1,8 +1,8 @@
-use super::Song;
+use super::Track;
 
-impl Song {
+impl Track {
     pub fn new<T: ToString>(title: T, artist: T, number: usize, length: usize) -> Self {
-        Song {
+        Self {
             title: title.to_string(),
             artist: artist.to_string(),
             number,

@@ -7,9 +7,10 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-leptos = { version = "0.6", features = ["csr"] }
-leptos_router = { version = "0.6", features = ["csr"] }
-leptos-use = "0.13"
+leptos = { version = "0.7", features = ["csr"] }
+leptos_router = "0.7"
+reactive_stores = "0.1.0"
+leptos-use = "0.14"
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
@@ -18,6 +19,8 @@ serde-wasm-bindgen = "0.6"
 music-app-lib = { path = "../music-app-lib" }
 palette = "0.7.5"
 console_error_panic_hook = "0.1.7"
+# Force compat fix for indirect dependency
+getrandom = { version = "0.2", features = ["js"] }
 
 [dependencies.web-sys]
 version = "0.3"

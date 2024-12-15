@@ -1,7 +1,7 @@
 pub mod media_bar;
 pub mod nav_bar;
 
-use leptos::*;
+use leptos::prelude::*;
 
 #[component]
 pub fn icon(
@@ -11,10 +11,17 @@ pub fn icon(
     #[prop(optional)] flipped: bool,
 ) -> impl IntoView {
     view! {
-        <div class="icon" style={format!("fill:{};{}", color, match size {
-            0 => String::new(),
-            size => format!("height:{size}px;width:{size}px;"),
-        })}>
+        <div
+            class="icon"
+            style=format!(
+                "fill:{};{}",
+                color,
+                match size {
+                    0 => String::new(),
+                    size => format!("height:{size}px;width:{size}px;"),
+                },
+            )
+        >
             <svg style=match flipped {
                 false => "",
                 true => "transform:scale(-1,1)",

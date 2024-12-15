@@ -1,45 +1,26 @@
 use super::SelectedAlbum;
-use leptos::*;
-use music_app_lib::Album;
+use leptos::prelude::*;
+use music_app_lib::{AlbumStoreFields, Albums, AlbumsStoreFields};
+use reactive_stores::{AtIndex, Store};
 
-// test
 #[component]
-pub fn album(album: &'static Album, num: usize) -> impl IntoView {
-    let SelectedAlbum(selected) = use_context().expect("context provided");
-    let Album {
-        cover,
-        title,
-        artist,
-        songs: _,
-        genre: _,
-        runtime: _,
-    } = album;
+pub fn album(num: usize) -> impl IntoView {
+    let SelectedAlbum(selected) = expect_context();
+    let albums = expect_context::<Store<Albums>>().albums();
+    let album = AtIndex::new(albums, num);
     view! {
         <div
             class="album-container"
             on:click=move |_| {
-                selected.update(|s| *s = if *s == Some(num) { None } else { Some(num) });
+                *selected.write() = if *selected.read() == Some(num) { None } else { Some(num) };
             }
         >
 
-            // selected
-            // .with(|s| {
-            // if s.is_some() {
-            // let doc = web_sys::window()
-            // .expect("should be loaded")
-            // .document()
-            // .expect("should be loaded");
-            // doc.get_element_by_id("asl")
-            // .expect("should be loaded")
-            // .scroll_into_view_with_bool(false);
-            // }
-            // });
-
             <div class="album-cover-image">
-                <img src=cover/>
+                <img src=move || album.cover().get()/>
             </div>
-            <h1>{title}</h1>
-            <h2>{artist}</h2>
+            <h1>{move || album.title().get()}</h1>
+            <h2>{move || album.artist().get()}</h2>
         </div>
     }
 }
