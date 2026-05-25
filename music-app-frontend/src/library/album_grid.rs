@@ -116,7 +116,7 @@ fn album_grid_bar(album_width: RwSignal<usize>) -> impl IntoView {
 
 #[component]
 fn album_grid_row(albums: Vec<usize>) -> impl IntoView {
-    let global_albums = expect_context::<Store<Albums>>().read();
+    let global_albums = expect_context::<Store<Albums>>().read_untracked();
     view! {
         <div class="album-grid-row">
             {albums

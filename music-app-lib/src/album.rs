@@ -6,6 +6,7 @@ impl Albums {
         Self { albums }
     }
 
+    /// Checks whether the album list contains an album at the given index
     pub fn check(&self, index: usize) -> bool {
         index < self.albums.len()
     }

@@ -17,7 +17,7 @@ extern "C" {
 pub struct WindowWidth(pub ReadSignal<usize>);
 
 #[component]
-pub fn App() -> impl IntoView {
+pub fn app() -> impl IntoView {
     let store = Store::new(Albums::new(get_albums()));
     provide_context(store);
 

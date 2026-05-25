@@ -21,7 +21,7 @@ struct SelectedAlbum(pub RwSignal<Option<usize>>);
 #[component(transparent)]
 pub fn library_routes() -> impl MatchNestedRoutes + Clone {
     view! {
-        <ParentRoute path=path!("/library") view=|| view! { <Outlet/> }>
+        <ParentRoute path=path!("") view=|| view! { <Outlet/> }>
             <Route path=path!("") view=AlbumGrid/>
             <Route path=path!("/search") view=Search/>
         </ParentRoute>
