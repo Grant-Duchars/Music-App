@@ -1,17 +1,16 @@
-//! This library is used to sync structs between the front and backend and so I can use doctests on certain functions
 mod album;
 pub mod mocking;
 pub mod runtime;
 mod track;
 
-use reactive_stores::Store;
+use reactive_stores::{Patch, Store};
 
-#[derive(Store)]
+#[derive(Debug, Store, Patch)]
 pub struct Albums {
     albums: Vec<Album>,
 }
 
-#[derive(Debug, Store)]
+#[derive(Debug, Store, Patch)]
 pub struct Album {
     cover: String,
     title: String,
@@ -21,11 +20,10 @@ pub struct Album {
     tracks: Vec<Track>,
     genre: String,
     /// Computed from track list.
-    /// Runtime of the album
     runtime: usize,
 }
 
-#[derive(Debug, Store)]
+#[derive(Debug, Store, Patch)]
 pub struct Track {
     title: String,
     artist: String,

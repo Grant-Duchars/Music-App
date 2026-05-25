@@ -7,10 +7,10 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-leptos = { version = "0.7", features = ["csr"] }
-leptos_router = "0.7"
-reactive_stores = "0.1.0"
-leptos-use = "0.14"
+leptos = { version = "0.8", features = ["csr"] }
+leptos_router = "0.8"
+reactive_stores.workspace = true
+leptos-use = "0.18"
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
@@ -34,8 +34,5 @@ features = [
     "HtmlAudioElement",
     "CanvasRenderingContext2d",
     "ImageData",
-    "EventListener"
+    "EventListener",
 ]
-
-[lints.clippy]
-empty_docs = "allow"

@@ -7,4 +7,4 @@ license.workspace = true
 
 [dependencies]
 rand = "0.8"
-reactive_stores = "0.1.0"
+reactive_stores.workspace = true

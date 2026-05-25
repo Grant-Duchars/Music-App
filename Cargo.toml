@@ -1,5 +1,5 @@
 [workspace]
-members = ["music-app-frontend","music-app-backend","music-app-lib"]
+members = ["music-app-frontend", "music-app-backend", "music-app-lib"]
 resolver = "2"
 
 [workspace.package]
@@ -10,3 +10,4 @@ license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
 serde = { version = "1", features = ["derive"] }
+reactive_stores = "0.4"

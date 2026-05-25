@@ -8,7 +8,7 @@ pub fn nav_bar() -> impl IntoView {
         <nav>
             <menu>
                 <li>
-                    <A href="/library">
+                    <A href="">
                         <Icon id="disc"/>
                         "Library"
                     </A>
